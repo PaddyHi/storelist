@@ -91,6 +91,57 @@ export const RegionalDistribution: React.FC<RegionalDistributionProps> = ({
     return distribution;
   }, []);
 
+  // Calculate projected distribution based on regional configuration
+  const projectedDistribution = useMemo(() => {
+    const distribution: Record<string, { count: number; percentage: number; isOverIndexed: boolean }> = {};
+    const totalStores = retailerStores.length;
+    
+    if (regionalConfig.type === 'national') {
+      // Use population-based distribution for national strategy
+      DUTCH_PROVINCES.forEach(province => {
+        const expectedPercentage = populationBasedDistribution[province].expectedPercentage;
+        const projectedCount = Math.round((expectedPercentage / 100) * totalStores);
+        distribution[province] = {
+          count: projectedCount,
+          percentage: expectedPercentage,
+          isOverIndexed: false
+        };
+      });
+    } else if (regionalConfig.type === 'over-index') {
+      // Calculate over-index distribution
+      const overIndexPercentage = regionalConfig.overIndexPercentage || 20;
+      const overIndexRegions = regionalConfig.overIndexRegions || [];
+      const focusStores = Math.round((overIndexPercentage / 100) * totalStores);
+      const remainingStores = totalStores - focusStores;
+      
+      // Distribute focus stores among over-index regions
+      const focusStoresPerRegion = overIndexRegions.length > 0 ? Math.round(focusStores / overIndexRegions.length) : 0;
+      
+      // Distribute remaining stores proportionally among all regions
+      DUTCH_PROVINCES.forEach(province => {
+        const populationShare = populationBasedDistribution[province].expectedPercentage;
+        const isOverIndexed = overIndexRegions.includes(province);
+        
+        let projectedCount = 0;
+        if (isOverIndexed) {
+          // Over-indexed region gets focus stores + proportional share of remaining
+          projectedCount = focusStoresPerRegion + Math.round((populationShare / 100) * remainingStores);
+        } else {
+          // Regular region gets only proportional share of remaining stores
+          projectedCount = Math.round((populationShare / 100) * remainingStores);
+        }
+        
+        distribution[province] = {
+          count: projectedCount,
+          percentage: (projectedCount / totalStores) * 100,
+          isOverIndexed
+        };
+      });
+    }
+    
+    return distribution;
+  }, [retailerStores.length, regionalConfig, populationBasedDistribution]);
+
   // Check if strategy requires regional distribution
   const strategyRequiresRegional = useMemo(() => {
     const schema = STRATEGY_SCHEMAS[strategy];
@@ -299,34 +350,63 @@ export const RegionalDistribution: React.FC<RegionalDistributionProps> = ({
 
             {/* Right Column - Current Distribution & Preview */}
             <div className="space-y-6">
-              {/* Current Distribution */}
+              {/* Projected Distribution */}
               <Card>
                 <h3 className="text-lg font-semibold mb-4 flex items-center">
-                  <MapPin className="mr-2 h-5 w-5 text-content-900" />
-                  Current Store Distribution
+                  <Target className="mr-2 h-5 w-5 text-content-900" />
+                  Projected Store Distribution
                 </h3>
                 
                 <div className="space-y-3">
                   {DUTCH_PROVINCES.map(province => {
+                    const projected = projectedDistribution[province];
                     const current = currentDistribution[province];
                     const population = populationBasedDistribution[province];
                     
                     return (
-                      <div key={province} className="flex items-center justify-between p-3 bg-content-50 rounded-lg">
+                      <div key={province} className={`flex items-center justify-between p-3 rounded-lg transition-all duration-300 ${
+                        projected?.isOverIndexed 
+                          ? 'bg-blue-50 border border-blue-200' 
+                          : 'bg-content-50'
+                      }`}>
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm font-medium text-content-900">{province}</span>
-                            <span className="text-xs text-content-600">{current.count} stores</span>
+                            <span className={`text-sm font-medium ${
+                              projected?.isOverIndexed ? 'text-blue-900' : 'text-content-900'
+                            }`}>
+                              {province}
+                              {projected?.isOverIndexed && (
+                                <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">
+                                  Over-indexed
+                                </span>
+                              )}
+                            </span>
+                            <span className="text-xs text-content-600">
+                              {projected?.count || current.count} stores
+                              {projected && current.count !== projected.count && (
+                                <span className={`ml-1 ${
+                                  projected.count > current.count ? 'text-green-600' : 'text-red-600'
+                                }`}>
+                                  ({projected.count > current.count ? '+' : ''}{projected.count - current.count})
+                                </span>
+                              )}
+                            </span>
                           </div>
                           <div className="w-full bg-content-200 rounded-full h-2">
                             <div
-                              className="bg-content-900 h-2 rounded-full transition-all duration-300"
-                              style={{ width: `${current.percentage}%` }}
+                              className={`h-2 rounded-full transition-all duration-300 ${
+                                projected?.isOverIndexed ? 'bg-blue-600' : 'bg-content-900'
+                              }`}
+                              style={{ width: `${projected?.percentage || current.percentage}%` }}
                             />
                           </div>
                         </div>
                         <div className="ml-4 text-right">
-                          <div className="text-sm text-content-600">{current.percentage.toFixed(1)}%</div>
+                          <div className={`text-sm ${
+                            projected?.isOverIndexed ? 'text-blue-700' : 'text-content-600'
+                          }`}>
+                            {(projected?.percentage || current.percentage).toFixed(1)}%
+                          </div>
                           <div className="text-xs text-content-500">
                             Pop: {population.populationShare.toFixed(1)}%
                           </div>
@@ -335,6 +415,15 @@ export const RegionalDistribution: React.FC<RegionalDistributionProps> = ({
                     );
                   })}
                 </div>
+                
+                {regionalConfig.type === 'over-index' && selectedOverIndexRegions.length > 0 && (
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-sm text-blue-800">
+                      <strong>Over-indexing Impact:</strong> {overIndexPercentage}% of stores ({Math.round((overIndexPercentage / 100) * retailerStores.length)} stores) 
+                      focused in {selectedOverIndexRegions.length} region{selectedOverIndexRegions.length > 1 ? 's' : ''}.
+                    </p>
+                  </div>
+                )}
               </Card>
 
               {/* Distribution Preview */}

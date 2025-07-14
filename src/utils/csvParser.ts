@@ -25,6 +25,18 @@ const ESSENTIAL_FIELDS = [
   'prodSelect'
 ];
 
+// Fields that are commonly missing and have good defaults (reduce warning noise)
+const OPTIONAL_FIELDS_WITH_DEFAULTS = [
+  'kanaal',
+  'type',
+  'fieldSalesRegio',
+  'strategie',
+  'storeSize',
+  'straat',
+  'nummer',
+  'postcode'
+];
+
 // CSV parser with robust error handling and validation
 export class CSVParser {
   private static parseCSVLine(line: string): string[] {
@@ -102,9 +114,11 @@ export class CSVParser {
       if (!data[field] || String(data[field]).trim() === '') {
         if (ESSENTIAL_FIELDS.includes(field)) {
           errors.push(`Row ${rowIndex}: Missing essential field '${field}'`);
-        } else {
+        } else if (!OPTIONAL_FIELDS_WITH_DEFAULTS.includes(field)) {
+          // Only warn about missing fields that don't have good defaults
           warnings.push(`Row ${rowIndex}: Missing field '${field}' (will use default value)`);
         }
+        // Fields in OPTIONAL_FIELDS_WITH_DEFAULTS are silently defaulted (no warning)
       }
     }
 
@@ -136,14 +150,16 @@ export class CSVParser {
       }
     }
 
-    // Validate store type
-    if (data.type && !['Filiaal', 'Franchiser'].includes(data.type)) {
-      warnings.push(`Row ${rowIndex}: Unknown store type '${data.type}' (expected: Filiaal or Franchiser)`);
+    // Accept any store type (real-world data varies)
+    // Just ensure it's not empty if provided
+    if (data.type && String(data.type).trim() === '') {
+      warnings.push(`Row ${rowIndex}: Empty store type`);
     }
 
-    // Validate customer group (allow both letters A-D and numbers 1-9)
-    if (data.klantgroep && !['A', 'B', 'C', 'D', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(data.klantgroep)) {
-      warnings.push(`Row ${rowIndex}: Unknown customer group '${data.klantgroep}' (expected: A, B, C, D or 1-9)`);
+    // Accept any customer group value (real-world data varies widely)
+    // Just ensure it's not empty if provided
+    if (data.klantgroep && String(data.klantgroep).trim() === '') {
+      warnings.push(`Row ${rowIndex}: Empty customer group`);
     }
 
     return {

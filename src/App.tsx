@@ -430,9 +430,9 @@ function App() {
       </div>
 
       {/* Main Content - Maximum space */}
-      <main className={`flex-1 min-h-0 bg-content-50 ${currentStep === 4 ? 'overflow-auto' : 'overflow-hidden'}`}>
-        <div className={currentStep === 4 ? 'min-h-full' : 'h-full'}>
-          <div className={`animate-fadeInUp ${currentStep === 4 ? 'min-h-full' : 'h-full'}`}>
+      <main className={`flex-1 min-h-0 bg-content-50 ${currentStep === 4 || currentStep === 6 ? 'overflow-auto' : 'overflow-hidden'}`}>
+        <div className={currentStep === 4 || currentStep === 6 ? 'min-h-full' : 'h-full'}>
+          <div className={`animate-fadeInUp ${currentStep === 4 || currentStep === 6 ? 'min-h-full' : 'h-full'}`}>
             {renderStepContent()}
           </div>
         </div>
