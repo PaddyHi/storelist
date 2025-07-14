@@ -21,6 +21,10 @@ const REQUIRED_HEADERS = [
 // CSV parser with robust error handling and validation
 export class CSVParser {
   private static parseCSVLine(line: string): string[] {
+    return this.parseCSVLineWithDelimiter(line, ',');
+  }
+
+  private static parseCSVLineWithDelimiter(line: string, delimiter: string): string[] {
     const result: string[] = [];
     let current = '';
     let inQuotes = false;
@@ -40,7 +44,7 @@ export class CSVParser {
           inQuotes = !inQuotes;
           i++;
         }
-      } else if (char === ',' && !inQuotes) {
+      } else if (char === delimiter && !inQuotes) {
         // Field separator
         result.push(current.trim());
         current = '';
@@ -168,9 +172,12 @@ export class CSVParser {
         };
       }
 
-      // Parse header row
+      // Auto-detect delimiter (comma or semicolon)
       const headerLine = lines[0];
-      const headers = this.parseCSVLine(headerLine);
+      const delimiter = headerLine.includes(';') && !headerLine.includes(',') ? ';' : ',';
+      
+      // Parse header row with detected delimiter
+      const headers = this.parseCSVLineWithDelimiter(headerLine, delimiter);
       
       // Validate headers
       const headerValidation = this.validateHeaders(headers);
@@ -181,13 +188,32 @@ export class CSVParser {
         };
       }
 
-      // Create header mapping (case-insensitive)
+      // Create header mapping (case-insensitive with variations)
       const headerMap: { [key: string]: number } = {};
-      headers.forEach((header, index) => {
+      const headerVariations: { [key: string]: string[] } = {
+        'naam': ['naam', 'name', 'store_name'],
+        'crmId': ['crmid', 'crmId', 'crm_id'],
+        'storeId': ['storeid', 'storeId', 'store_id'],
+        'stad': ['stad', 'city', 'stadskanaal', 'plaats'],
+        'straat': ['straat', 'street', 'address'],
+        'nummer': ['nummer', 'number', 'huisnummer'],
+        'postcode': ['postcode', 'postal_code', 'zip'],
+        'kanaal': ['kanaal', 'channel'],
+        'type': ['type', 'store_type'],
+        'fieldSalesRegio': ['fieldsalesregio', 'fieldSalesRegio', 'field_sales_regio', 'regio', 'region'],
+        'klantgroep': ['klantgroep', 'customer_group', 'group'],
+        'prodSelect': ['prodselect', 'prodSelect', 'prod_select', 'revenue', 'sales'],
+        'strategie': ['strategie', 'strategy'],
+        'storeSize': ['storesize', 'storeSize', 'store_size', 'size']
+      };
+
+      headers.forEach((header: string, index: number) => {
         const normalizedHeader = header.trim().toLowerCase();
-        const matchedRequired = REQUIRED_HEADERS.find(req => req.toLowerCase() === normalizedHeader);
-        if (matchedRequired) {
-          headerMap[matchedRequired] = index;
+        for (const [requiredField, variations] of Object.entries(headerVariations)) {
+          if (variations.some(variation => variation.toLowerCase() === normalizedHeader)) {
+            headerMap[requiredField] = index;
+            break;
+          }
         }
       });
 
@@ -198,7 +224,7 @@ export class CSVParser {
       // Parse data rows
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i];
-        const fields = this.parseCSVLine(line);
+        const fields = this.parseCSVLineWithDelimiter(line, delimiter);
         
         // Skip empty lines
         if (fields.every(field => field.trim() === '')) {
@@ -208,7 +234,19 @@ export class CSVParser {
         // Create data object
         const rowData: any = {};
         for (const [field, index] of Object.entries(headerMap)) {
-          rowData[field] = fields[index] || '';
+          let value = fields[index] || '';
+          
+          // Clean currency values for prodSelect
+          if (field === 'prodSelect' && value) {
+            value = value.replace(/[€$£¥,\s]/g, '').replace(/\./g, '');
+          }
+          
+          // Provide default values for empty storeSize
+          if (field === 'storeSize' && (!value || value.trim() === '')) {
+            value = '1000'; // Default store size
+          }
+          
+          rowData[field] = value;
         }
 
         // Validate row data
