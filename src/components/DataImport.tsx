@@ -121,7 +121,6 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
   };
 
   const handleDownloadTemplate = () => {
-    setActiveTab('template');
     const template = CSVParser.generateCSVTemplate();
     const blob = new Blob([template], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -471,7 +470,7 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
                       Try Again
                     </button>
                     <button
-                      onClick={() => setActiveTab('template')}
+                      onClick={handleDownloadTemplate}
                       className="btn-outline"
                     >
                       Download Template
