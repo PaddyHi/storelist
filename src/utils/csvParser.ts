@@ -103,6 +103,16 @@ export class CSVParser {
       }
     }
 
+    // Validate storeSize is a number
+    if (data.storeSize) {
+      const storeSize = Number(data.storeSize);
+      if (isNaN(storeSize)) {
+        errors.push(`Row ${rowIndex}: storeSize must be a number`);
+      } else if (storeSize < 0) {
+        warnings.push(`Row ${rowIndex}: storeSize is negative`);
+      }
+    }
+
     // Validate postcode format (Dutch postcode format)
     if (data.postcode) {
       const postcodeRegex = /^\d{4}\s?[A-Z]{2}$/i;
