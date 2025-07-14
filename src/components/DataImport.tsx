@@ -15,6 +15,7 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [showDataPreview, setShowDataPreview] = useState(false);
   const [activeTab, setActiveTab] = useState<'upload' | 'sample'>('upload');
+  const [showWarningsDetails, setShowWarningsDetails] = useState(false);
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -133,11 +134,25 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
     URL.revokeObjectURL(url);
   };
 
+  const handleIgnoreWarningsAndContinue = () => {
+    if (importResult?.data) {
+      onDataImport(importResult.data);
+      // Update result to show success
+      setImportResult({
+        ...importResult,
+        success: true,
+        partialSuccess: false,
+        warnings: importResult.warnings ? [...importResult.warnings, 'Warnings ignored by user choice'] : ['Warnings ignored by user choice']
+      });
+    }
+  };
+
   const handleReset = () => {
     setImportResult(null);
     setSelectedFile(null);
     setActiveTab('upload');
     setShowDataPreview(false);
+    setShowWarningsDetails(false);
     onDataImport([]);
   };
 
@@ -441,6 +456,79 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
                       </ul>
                     </div>
                   )}
+                </div>
+              ) : importResult.partialSuccess && importResult.data && importResult.data.length > 0 ? (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
+                  <div className="flex items-center mb-4">
+                    <AlertTriangle className="h-6 w-6 text-amber-600 mr-3" />
+                    <div>
+                      <span className="text-amber-900 font-semibold text-lg">
+                        Import completed with warnings
+                      </span>
+                      <p className="text-amber-700 text-sm mt-1">
+                        {importResult.data.length} stores imported successfully, but some issues were found
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {importResult.errors && importResult.errors.length > 0 && (
+                    <div className="mb-4">
+                      <button
+                        onClick={() => setShowWarningsDetails(!showWarningsDetails)}
+                        className="flex items-center text-sm font-medium text-amber-700 hover:text-amber-800 mb-2"
+                      >
+                        {showWarningsDetails ? <EyeOff className="w-4 h-4 mr-1" /> : <Eye className="w-4 h-4 mr-1" />}
+                        {showWarningsDetails ? 'Hide' : 'Show'} Details ({importResult.errors.length} issues)
+                      </button>
+                      
+                      {showWarningsDetails && (
+                        <div className="bg-amber-100 border border-amber-200 rounded-lg p-3 max-h-40 overflow-y-auto">
+                          <ul className="text-sm text-amber-800 space-y-1">
+                            {importResult.errors.slice(0, 10).map((error, index) => (
+                              <li key={index} className="flex items-start">
+                                <AlertTriangle className="h-3 w-3 mr-2 mt-0.5 flex-shrink-0" />
+                                {error}
+                              </li>
+                            ))}
+                            {importResult.errors.length > 10 && (
+                              <li className="text-amber-600 italic">
+                                ... and {importResult.errors.length - 10} more issues
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
+                  <div className="bg-amber-100 border border-amber-200 rounded-lg p-3 mb-4">
+                    <p className="text-sm text-amber-800">
+                      <strong>Options:</strong> You can continue with the {importResult.data.length} successfully imported stores, 
+                      or go back and fix the data issues in your CSV file.
+                    </p>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <button
+                      onClick={handleIgnoreWarningsAndContinue}
+                      className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-medium flex items-center"
+                    >
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      Continue with {importResult.data.length} stores
+                    </button>
+                    <button
+                      onClick={handleReset}
+                      className="btn-secondary"
+                    >
+                      Try Again
+                    </button>
+                    <button
+                      onClick={handleDownloadTemplate}
+                      className="btn-outline"
+                    >
+                      Download Template
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="bg-warning-50 border border-warning-200 rounded-xl p-6">

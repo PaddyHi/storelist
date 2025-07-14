@@ -102,6 +102,7 @@ export interface CSVImportResult {
   data?: StoreData[];
   errors?: string[];
   warnings?: string[];
+  partialSuccess?: boolean;
 }
 
 // Filter validation

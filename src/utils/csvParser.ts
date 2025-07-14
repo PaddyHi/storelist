@@ -18,6 +18,13 @@ const REQUIRED_HEADERS = [
   'storeSize'
 ];
 
+// Essential fields that must be present (others can be empty)
+const ESSENTIAL_FIELDS = [
+  'naam',
+  'stad',
+  'prodSelect'
+];
+
 // CSV parser with robust error handling and validation
 export class CSVParser {
   private static parseCSVLine(line: string): string[] {
@@ -90,10 +97,14 @@ export class CSVParser {
     const errors: string[] = [];
     const warnings: string[] = [];
 
-    // Validate required fields
+    // Validate essential fields (errors) and other fields (warnings)
     for (const field of REQUIRED_HEADERS) {
       if (!data[field] || String(data[field]).trim() === '') {
-        errors.push(`Row ${rowIndex}: Missing required field '${field}'`);
+        if (ESSENTIAL_FIELDS.includes(field)) {
+          errors.push(`Row ${rowIndex}: Missing essential field '${field}'`);
+        } else {
+          warnings.push(`Row ${rowIndex}: Missing field '${field}' (will use default value)`);
+        }
       }
     }
 
@@ -130,9 +141,9 @@ export class CSVParser {
       warnings.push(`Row ${rowIndex}: Unknown store type '${data.type}' (expected: Filiaal or Franchiser)`);
     }
 
-    // Validate customer group
-    if (data.klantgroep && !['A', 'B', 'C', 'D'].includes(data.klantgroep)) {
-      warnings.push(`Row ${rowIndex}: Unknown customer group '${data.klantgroep}' (expected: A, B, C, or D)`);
+    // Validate customer group (allow both letters A-D and numbers 1-9)
+    if (data.klantgroep && !['A', 'B', 'C', 'D', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(data.klantgroep)) {
+      warnings.push(`Row ${rowIndex}: Unknown customer group '${data.klantgroep}' (expected: A, B, C, D or 1-9)`);
     }
 
     return {
@@ -145,19 +156,19 @@ export class CSVParser {
   private static normalizeStoreData(data: any): StoreData {
     return {
       naam: String(data.naam || '').trim(),
-      crmId: String(data.crmId || '').trim(),
-      storeId: String(data.storeId || '').trim(),
+      crmId: String(data.crmId || data.naam || 'UNKNOWN').trim(),
+      storeId: String(data.storeId || data.crmId || 'UNKNOWN').trim(),
       stad: String(data.stad || '').trim(),
-      straat: String(data.straat || '').trim(),
-      nummer: String(data.nummer || '').trim(),
-      postcode: String(data.postcode || '').trim(),
-      kanaal: String(data.kanaal || '').trim(),
-      type: String(data.type || '').trim(),
-      fieldSalesRegio: String(data.fieldSalesRegio || '').trim(),
-      klantgroep: String(data.klantgroep || '').trim(),
+      straat: String(data.straat || 'Unknown Street').trim(),
+      nummer: String(data.nummer || '1').trim(),
+      postcode: String(data.postcode || '0000 XX').trim(),
+      kanaal: String(data.kanaal || 'Unknown').trim(),
+      type: String(data.type || 'Filiaal').trim(),
+      fieldSalesRegio: String(data.fieldSalesRegio || 'Unknown Region').trim(),
+      klantgroep: String(data.klantgroep || 'C').trim(),
       prodSelect: Number(data.prodSelect || 0),
-      strategie: String(data.strategie || '').trim(),
-      storeSize: Number(data.storeSize || 0)
+      strategie: String(data.strategie || 'Executie').trim(),
+      storeSize: Number(data.storeSize || 1000)
     };
   }
 
@@ -271,11 +282,13 @@ export class CSVParser {
         };
       }
 
+      // Return success if we have valid stores, even with warnings/errors
       return {
         success: true,
         data: stores,
         errors: errors.length > 0 ? errors : undefined,
-        warnings: warnings.length > 0 ? warnings : undefined
+        warnings: warnings.length > 0 ? warnings : undefined,
+        partialSuccess: errors.length > 0 && stores.length > 0
       };
 
     } catch (error) {
