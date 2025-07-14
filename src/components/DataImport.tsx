@@ -14,7 +14,7 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
   const [importResult, setImportResult] = useState<CSVImportResult | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [showDataPreview, setShowDataPreview] = useState(false);
-  const [activeTab, setActiveTab] = useState<'upload' | 'sample' | 'template'>('upload');
+  const [activeTab, setActiveTab] = useState<'upload' | 'sample'>('upload');
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -137,7 +137,7 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
   const handleReset = () => {
     setImportResult(null);
     setSelectedFile(null);
-    setActiveTab('sample');
+    setActiveTab('upload');
     setShowDataPreview(false);
     onDataImport([]);
   };
@@ -181,7 +181,7 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
                   setActiveTab('sample');
                 } else if (e.key === 'ArrowLeft') {
                   e.preventDefault();
-                  setActiveTab('template');
+                  setActiveTab('sample');
                 }
               }}
             >
@@ -205,7 +205,7 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
               onKeyDown={(e) => {
                 if (e.key === 'ArrowRight') {
                   e.preventDefault();
-                  setActiveTab('template');
+                  setActiveTab('upload');
                 } else if (e.key === 'ArrowLeft') {
                   e.preventDefault();
                   setActiveTab('upload');
@@ -215,33 +215,6 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
               <span className="flex items-center justify-center space-x-2">
                 <span className="w-5 h-5 rounded-full bg-content-400 text-white text-xs flex items-center justify-center font-bold" aria-hidden="true">2</span>
                 <span>Start with Sample Data</span>
-              </span>
-            </button>
-            <button
-              onClick={() => setActiveTab('template')}
-              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                activeTab === 'template' 
-                  ? 'bg-white text-content-900 shadow-sm' 
-                  : 'text-content-600 hover:text-content-900'
-              }`}
-              role="tab"
-              aria-selected={activeTab === 'template'}
-              aria-controls="template-panel"
-              id="template-tab"
-              tabIndex={activeTab === 'template' ? 0 : -1}
-              onKeyDown={(e) => {
-                if (e.key === 'ArrowRight') {
-                  e.preventDefault();
-                  setActiveTab('sample');
-                } else if (e.key === 'ArrowLeft') {
-                  e.preventDefault();
-                  setActiveTab('upload');
-                }
-              }}
-            >
-              <span className="flex items-center justify-center space-x-2">
-                <span className="w-5 h-5 rounded-full bg-content-400 text-white text-xs flex items-center justify-center font-bold" aria-hidden="true">3</span>
-                <span>Get Template</span>
               </span>
             </button>
           </div>
@@ -267,7 +240,7 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
                       <p className="text-content-700 mb-6 max-w-md mx-auto">
                         Perfect for first-time users! Our sample dataset includes 30 Dutch retail stores from Albert Heijn, Jumbo, and Plus with store size data.
                       </p>
-                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                      <div className="flex justify-center">
                         <button
                           onClick={handleUseSampleData}
                           className="btn-primary flex items-center justify-center px-8 py-3"
@@ -285,20 +258,6 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
                               Use Sample Data
                             </>
                           )}
-                        </button>
-                        <button
-                          onClick={() => {
-                            const link = document.createElement('a');
-                            link.href = '/sample-stores.csv';
-                            link.download = 'sample-stores.csv';
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                          }}
-                          className="btn-outline flex items-center justify-center px-6 py-3"
-                        >
-                          <Download className="w-5 h-5 mr-2" aria-hidden="true" />
-                          Download Sample Data
                         </button>
                         {importResult?.success && activeTab === 'sample' && (
                           <button
@@ -404,6 +363,21 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
                         <div id="file-requirements" className="text-sm text-content-500 mt-6 text-center">
                           Maximum file size: 10MB • CSV format only
                         </div>
+                        
+                        <div className="mt-6 pt-6 border-t border-content-200">
+                          <div className="text-center">
+                            <p className="text-sm text-content-600 mb-3">
+                              Need a template? Download our CSV template with all required columns.
+                            </p>
+                            <button
+                              onClick={handleDownloadTemplate}
+                              className="btn-outline flex items-center justify-center mx-auto px-6 py-2"
+                            >
+                              <Download className="w-4 h-4 mr-2" />
+                              Download Template CSV
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -436,35 +410,7 @@ export const DataImport: React.FC<DataImportProps> = ({ onDataImport, onNext }) 
               </div>
             )}
 
-            {activeTab === 'template' && (
-              <div id="template-panel" role="tabpanel" aria-labelledby="template-tab" className="bg-white rounded-xl border border-content-200 p-6">
-                <div className="animate-fadeInUp">
-                  <div className="card">
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-content-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Download className="w-8 h-8 text-content-600" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-content-900 mb-2">
-                        Download CSV Template
-                      </h3>
-                      <p className="text-content-600 mb-6 max-w-md mx-auto">
-                        Get a properly formatted CSV template with all required columns and sample data to help you prepare your store list.
-                      </p>
-                      <button
-                        onClick={handleDownloadTemplate}
-                        className="btn-primary flex items-center justify-center mx-auto px-8 py-3"
-                      >
-                        <Download className="w-5 h-5 mr-2" />
-                        Download Template
-                      </button>
-                      <div className="mt-6 text-sm text-content-500">
-                        <p>After downloading, fill in your data and upload it using the "Upload Your Data" tab.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+
           </div>
 
           {/* Enhanced Results Section */}
