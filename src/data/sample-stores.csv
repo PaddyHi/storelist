@@ -1,0 +1,31 @@
+naam,crmId,storeId,stad,straat,nummer,postcode,kanaal,type,fieldSalesRegio,klantgroep,prodSelect,strategie,storeSize
+Albert Heijn Amsterdam Centraal,AH-001,AH-AMS-001,Amsterdam,Stationsplein,15,1012 AB,Stedelijk Premium,Filiaal,Noord-Holland,A,2850000,Brandbuilding,1200
+Albert Heijn Utrecht Centrum,AH-002,AH-UTR-002,Utrecht,Lange Elisabethstraat,67,3511 JH,Stedelijk Premium,Filiaal,Utrecht,A,2650000,Executie+,1100
+Albert Heijn Rotterdam Blaak,AH-003,AH-RTD-003,Rotterdam,Blaak,32,3011 TA,Stedelijk Premium,Filiaal,Zuid-Holland,A,2750000,Brandbuilding,1350
+Albert Heijn Den Haag Centrum,AH-004,AH-DH-004,Den Haag,Spui,186,2511 BW,Stedelijk Premium,Filiaal,Zuid-Holland,A,2450000,Executie+,950
+Albert Heijn Eindhoven Centrum,AH-005,AH-EIN-005,Eindhoven,Rechtestraat,24,5611 GM,Stedelijk Basis,Filiaal,Noord-Brabant,B,1950000,Executie,800
+Albert Heijn Groningen Centrum,AH-006,AH-GRN-006,Groningen,Herestraat,45,9711 GA,Stedelijk Basis,Filiaal,Groningen,B,1850000,Executie,750
+Albert Heijn Tilburg Centrum,AH-007,AH-TIL-007,Tilburg,Heuvelstraat,120,5038 CM,Stedelijk Basis,Filiaal,Noord-Brabant,B,2100000,Executie+,1050
+Albert Heijn Nijmegen Centrum,AH-008,AH-NMG-008,Nijmegen,Broerstraat,89,6511 HZ,Stedelijk Basis,Filiaal,Gelderland,B,1750000,Executie,850
+Albert Heijn Maastricht Centrum,AH-009,AH-MST-009,Maastricht,Grote Staat,56,6211 SZ,Stedelijk Premium,Filiaal,Limburg,A,2250000,Brandbuilding,1400
+Albert Heijn Arnhem Centrum,AH-010,AH-ARN-010,Arnhem,Ketelstraat,78,6828 XZ,Stedelijk Basis,Filiaal,Gelderland,B,1900000,Executie,900
+Jumbo Amsterdam Noord,JMB-001,JMB-AMS-001,Amsterdam,Nieuwendammerdijk,406,1023 BX,Stedelijk Basis,Franchiser,Noord-Holland,B,2100000,Executie,1600
+Jumbo Utrecht Overvecht,JMB-002,JMB-UTR-002,Utrecht,Europalaan,100,3526 KS,Stedelijk Basis,Franchiser,Utrecht,B,1850000,Executie,1400
+Jumbo Rotterdam Zuid,JMB-003,JMB-RTD-003,Rotterdam,Zuidplein,120,3083 CW,Stedelijk Basis,Franchiser,Zuid-Holland,B,2000000,Executie,1550
+Jumbo Tilburg Centrum,JMB-004,JMB-TIL-004,Tilburg,Heuvelstraat,89,5038 CM,Stedelijk Basis,Franchiser,Noord-Brabant,B,1750000,Executie,1300
+Jumbo Den Haag Zuid,JMB-005,JMB-DH-005,Den Haag,Hobbemastraat,134,2526 JL,Stedelijk Basis,Franchiser,Zuid-Holland,B,1950000,Executie,1450
+Jumbo Eindhoven Noord,JMB-006,JMB-EIN-006,Eindhoven,Kerkstraat,201,5611 GH,Stedelijk Basis,Franchiser,Noord-Brabant,B,1800000,Executie,1350
+Jumbo Groningen Centrum,JMB-007,JMB-GRN-007,Groningen,Folkingestraat,78,9711 KZ,Stedelijk Basis,Franchiser,Groningen,B,1700000,Executie,1250
+Jumbo Breda Centrum,JMB-008,JMB-BRD-008,Breda,Ginnekenstraat,145,4811 JE,Stedelijk Basis,Franchiser,Noord-Brabant,B,1900000,Executie,1400
+Jumbo Zwolle Centrum,JMB-009,JMB-ZWL-009,Zwolle,Diezerstraat,89,8011 XA,Stedelijk Basis,Franchiser,Overijssel,B,1650000,Executie,1200
+Jumbo Haarlem Centrum,JMB-010,JMB-HLM-010,Haarlem,Grote Markt,34,2011 RD,Stedelijk Basis,Franchiser,Noord-Holland,B,1750000,Executie,1300
+Lidl Amsterdam West,LDL-001,LDL-AMS-001,Amsterdam,Postjesweg,99,1057 DT,Landelijk Basis,Filiaal,Noord-Holland,C,1200000,Executie,1100
+Lidl Utrecht Noord,LDL-002,LDL-UTR-002,Utrecht,Vasco da Gamalaan,45,3526 GA,Landelijk Basis,Filiaal,Utrecht,C,1150000,Executie,1050
+Lidl Rotterdam Noord,LDL-003,LDL-RTD-003,Rotterdam,Bergweg,234,3037 LG,Landelijk Basis,Filiaal,Zuid-Holland,C,1300000,Executie,1150
+Lidl Den Haag Oost,LDL-004,LDL-DH-004,Den Haag,Hobbemastraat,78,2526 JL,Landelijk Basis,Filiaal,Zuid-Holland,C,1100000,Executie,1000
+Lidl Eindhoven Zuid,LDL-005,LDL-EIN-005,Eindhoven,Tongelresestraat,156,5613 DA,Landelijk Basis,Filiaal,Noord-Brabant,C,1050000,Executie,950
+Lidl Groningen Zuid,LDL-006,LDL-GRN-006,Groningen,Hereweg,234,9725 AG,Landelijk Basis,Filiaal,Groningen,C,1000000,Executie,900
+Lidl Tilburg Noord,LDL-007,LDL-TIL-007,Tilburg,Ringbaan-Oost,89,5013 CB,Landelijk Basis,Filiaal,Noord-Brabant,C,1150000,Executie,1050
+Lidl Nijmegen West,LDL-008,LDL-NMG-008,Nijmegen,Daalseweg,234,6521 GK,Landelijk Basis,Filiaal,Gelderland,C,1080000,Executie,980
+Lidl Breda West,LDL-009,LDL-BRD-009,Breda,Haagdijk,67,4814 NL,Landelijk Basis,Filiaal,Noord-Brabant,C,1120000,Executie,1020
+Lidl Zwolle West,LDL-010,LDL-ZWL-010,Zwolle,Zwartewaterweg,145,8024 AG,Landelijk Basis,Filiaal,Overijssel,C,1050000,Executie,950
