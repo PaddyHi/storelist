@@ -1,62 +1,56 @@
 # Store List Builder
 
-A sophisticated React-based web application for retail analytics and store selection optimization. This tool enables retail managers, field sales teams, and strategic planners to intelligently select optimal store portfolios from large datasets based on multiple criteria and strategic methodologies.
+A sophisticated React-based web application for retail analytics and store selection optimization. This tool enables retail managers, field sales teams, and strategic planners to intelligently select optimal store portfolios from large datasets using advanced algorithms and strategic methodologies.
 
-## Features
+## 🚀 Features
 
-### 🎯 Core Functionality
-- **Data-Driven Store Selection**: Make informed decisions about which stores to target
-- **Strategic Portfolio Optimization**: Implement proven retail methodologies like the 70-20-10 approach
-- **Scalable Analysis**: Handle datasets from small samples to enterprise-level store networks
-- **User-Friendly Interface**: Complex analytics through an intuitive, step-by-step workflow
+### 🎯 6-Step Optimization Workflow
+1. **Import**: Upload CSV data or use sample dataset
+2. **Setup**: Select retailer and set target store count
+3. **Performance**: Choose performance tier filtering
+4. **Strategy**: Match campaign objectives with selection algorithms
+5. **Regional**: Configure geographic distribution and over-indexing
+6. **Results**: Review analytics and export optimized selection
 
-### 📊 Data Management
-- **CSV File Upload**: Upload and validate store data with comprehensive error handling
-- **Sample Data**: Pre-loaded dataset of 16 Dutch retail stores for immediate testing
-- **Template Download**: Get correctly formatted CSV templates
-- **Data Validation**: Robust parsing with error detection and warnings
+### 📊 Advanced Data Management
+- **Flexible CSV Import**: Supports both comma and semicolon delimiters
+- **Smart Data Parsing**: Handles currency formatting (€, $, £), missing values, and various column naming conventions
+- **Partial Import Support**: Continue with partial data when some records have issues
+- **Real-time Validation**: Immediate feedback with detailed error reporting
+- **Production-Ready**: Handles real-world data inconsistencies gracefully
 
-### 🎛️ Target Configuration
-- **Basic Target Setting**: Simple numeric input with validation
-- **70-20-10 Methodology**: Strategic allocation framework
-  - 70% National Coverage
-  - 20% Brand Strongholds
-  - 10% Untapped Potential
-- **Advanced Options**: Population weighting and high-performer prioritization
+### 🎛️ Intelligent Selection Strategies
+- **Revenue Focus**: Prioritize highest-performing stores
+- **Geographic Balance**: Ensure optimal regional coverage
+- **Growth Opportunity**: Target underperforming stores with potential
+- **Portfolio Balance**: Strategic 70-20-10 methodology implementation
+- **Market Penetration**: Maximize market presence
+- **Stronghold Focus**: Build on existing high-performers
 
-### 🔄 Selection Strategies
-1. **Balanced Coverage**: Even distribution across regions and performance levels
-2. **Top Performers**: Revenue-focused selection
-3. **Geographic Spread**: Maximum regional coverage
-4. **Growth Opportunity**: Target underperforming stores with potential
-5. **70-20-10 Methodology**: Strategic allocation framework
-6. **Stronghold Focus**: 80% established performers, 20% expansion
+### 🗺️ Regional Distribution Control
+- **National Coverage**: Even distribution across all regions
+- **Over-indexing**: Focus on specific high-priority regions
+- **Real-time Visualization**: See projected distribution changes instantly
+- **Impact Analysis**: Understand focus percentage and store allocation
+- **Regional Weighting**: Customize importance by geographic area
 
-### 🔍 Advanced Filtering
-- **Multi-Dimensional Filters**: 
-  - Retailers (Albert Heijn, Jumbo, etc.)
-  - Store Types (Filiaal, Franchiser)
-  - Strategies (Executie, Brandbuilding, Executie+)
-  - Channels (Stedelijk Premium, Landelijk Mainstream, etc.)
-  - Customer Groups (A, B, C, D)
-  - Revenue Range with histogram visualization
-  - Regional controls (include/exclude)
+### 📈 Comprehensive Analytics
+- **Performance Metrics**: Revenue totals, averages, and distribution analysis
+- **Regional Coverage**: Geographic spread and market penetration insights
+- **Portfolio Analysis**: Store type, retailer, and tier breakdowns
+- **Interactive Visualization**: Sortable tables, progress bars, and distribution charts
+- **Export Capabilities**: Professional CSV output with complete store details
 
-### 📈 Results & Analytics
-- **Statistical Analysis**: Total revenue, regional coverage, performance distribution
-- **Data Visualization**: Performance indicators, regional analysis, histogram charts
-- **Sortable Tables**: Interactive store listings with comprehensive data
-- **Export Functionality**: CSV export with proper formatting
+## 🛠️ Technology Stack
 
-## Technology Stack
-
-- **Frontend**: React 18+ with TypeScript
-- **Styling**: Tailwind CSS for responsive design
+- **Frontend**: React 18+ with TypeScript for type safety
+- **Styling**: Tailwind CSS for responsive, modern design
 - **Icons**: Lucide React for consistent iconography
-- **Build Tool**: Vite for fast development and building
-- **Data Processing**: Custom CSV parser with validation
+- **Build Tool**: Vite for fast development and optimized builds
+- **Data Processing**: Custom CSV parser with intelligent format detection
+- **State Management**: React hooks with optimized re-rendering
 
-## Installation
+## 📦 Installation
 
 1. **Clone the repository**
    ```bash
@@ -79,106 +73,148 @@ A sophisticated React-based web application for retail analytics and store selec
    npm run build
    ```
 
-## Usage
+## 🎯 Usage Guide
 
-### Step 1: Import Data
-- Upload a CSV file with store data or use the sample dataset
-- Download the template if you need the correct format
-- Review data validation results and warnings
+### Step 1: Import Your Data
+- **Upload CSV**: Drag & drop or browse for your store data file
+- **Use Sample Data**: 30 Dutch retail stores for immediate testing
+- **Download Template**: Get the correct CSV format structure
+- **Handle Warnings**: Option to continue with partial data imports
 
-### Step 2: Configure Target
-- Set the number of stores to select
-- Optionally enable 70-20-10 methodology with advanced options
-- Configure allocation percentages and weighting preferences
+### Step 2: Retailer & Target Setup
+- **Select Retailer**: Choose from available retailers in your dataset
+- **Set Target**: Define how many stores to select
+- **Review Metrics**: See retailer-specific statistics and averages
 
-### Step 3: Select Strategy & Apply Filters
-- Choose from six strategic approaches
-- Apply multi-dimensional filters to refine your dataset
-- View real-time histogram of revenue distribution
+### Step 3: Performance Tier Selection
+- **Choose Tier**: Select percentage (e.g., "Top 20%") or absolute threshold
+- **View Distribution**: See performance spread across your dataset
+- **Understand Impact**: Preview how tier selection affects your pool
 
-### Step 4: Review Results
-- Analyze comprehensive selection results
-- Review performance distribution and regional coverage
-- Export final selection as CSV
+### Step 4: Strategy Selection
+- **Campaign Objectives**: Match your business goals with selection algorithms
+- **Strategy Preview**: Understand how each approach works
+- **Algorithm Details**: See methodology explanations and use cases
 
-## Data Format
+### Step 5: Regional Distribution
+- **National Coverage**: Standard even distribution
+- **Over-indexing**: Focus on specific regions with custom percentages
+- **Real-time Preview**: See projected distribution changes instantly
+- **Impact Analysis**: Understand regional focus and store allocation
 
-The application expects CSV files with the following columns:
+### Step 6: Results Analysis
+- **Performance Summary**: Total revenue, store count, regional coverage
+- **Distribution Analysis**: Performance tiers, regional spread, retailer mix
+- **Detailed Store List**: Complete selection with sorting and filtering
+- **Export Results**: Download optimized selection as CSV
 
+## 📋 Data Format
+
+### Required CSV Structure
 ```csv
-naam,crmId,storeId,stad,straat,nummer,postcode,kanaal,type,fieldSalesRegio,klantgroep,prodSelect,strategie
+naam,crmId,storeId,stad,straat,nummer,postcode,kanaal,type,fieldSalesRegio,klantgroep,prodSelect,strategie,storeSize
 ```
 
 ### Field Descriptions
-- `naam`: Store name
-- `crmId`: CRM identifier
-- `storeId`: Store identifier
-- `stad`: City
-- `straat`: Street
-- `nummer`: Street number
-- `postcode`: Postal code (Dutch format: 1234 AB)
-- `kanaal`: Channel type
-- `type`: Store type (Filiaal/Franchiser)
-- `fieldSalesRegio`: Sales region
-- `klantgroep`: Customer group (A/B/C/D)
-- `prodSelect`: Revenue/performance metric (numeric)
-- `strategie`: Store strategy
+| Field | Description | Example | Required |
+|-------|-------------|---------|----------|
+| `naam` | Store name | "Albert Heijn Amsterdam" | ✅ |
+| `crmId` | CRM identifier | "AH001" | ✅ |
+| `storeId` | Store identifier | "ST001" | ✅ |
+| `stad` | City | "Amsterdam" | ✅ |
+| `straat` | Street | "Kalverstraat" | ✅ |
+| `nummer` | Street number | "100" | ✅ |
+| `postcode` | Postal code | "1012 AB" | ✅ |
+| `kanaal` | Channel type | "Stedelijk Premium" | ✅ |
+| `type` | Store type | "Filiaal" | ✅ |
+| `fieldSalesRegio` | Sales region | "Noord-Holland" | ✅ |
+| `klantgroep` | Customer group | "A" | ✅ |
+| `prodSelect` | Revenue (numeric) | "€ 150,000" | ✅ |
+| `strategie` | Store strategy | "Executie" | ✅ |
+| `storeSize` | Store size | "1500" | ❌ |
 
-## Sample Data
+### Data Flexibility
+- **Delimiters**: Supports both comma (`,`) and semicolon (`;`) separated files
+- **Currency**: Automatically parses €, $, £ symbols and thousand separators
+- **Column Variations**: Handles common naming variations (e.g., `crmid` → `crmId`)
+- **Missing Values**: Provides sensible defaults and validation warnings
+- **Encoding**: Supports UTF-8 and common European character sets
 
-The application includes a sample dataset with 16 Dutch retail stores:
-- Albert Heijn locations in major cities
-- Jumbo stores across different regions
-- Other retailers like Lidl, Aldi, Plus, Vomar, Coop, and Spar
-- Realistic data across all required fields
+## 🧮 Selection Algorithms
 
-## Strategic Methodologies
+### Revenue Focus
+Prioritizes stores by revenue performance, selecting top performers first while maintaining reasonable geographic distribution.
 
-### 70-20-10 Methodology
-A proven retail allocation framework:
-- **70% National Coverage**: Broad market presence across regions
-- **20% Brand Strongholds**: High-performing locations for brand reinforcement
-- **10% Untapped Potential**: Growth opportunity stores
+### Geographic Balance
+Ensures optimal regional coverage by distributing selections proportionally across all sales regions.
 
-### Selection Algorithms
-Each strategy uses sophisticated algorithms:
-- **Balanced**: Regional distribution with performance balancing
-- **Top Performers**: Revenue-based ranking
-- **Geographic**: Round-robin regional selection
-- **Growth**: Percentile-based opportunity identification
-- **Stronghold**: High-performer focus with strategic expansion
+### Growth Opportunity
+Identifies underperforming stores with potential based on market characteristics and performance gaps.
 
-## Performance & Scalability
+### Portfolio Balance (70-20-10)
+Strategic methodology allocating:
+- **70%**: Core performing stores for stable foundation
+- **20%**: Growth markets for expansion
+- **10%**: Experimental locations for testing
 
-- **Dataset Size**: Efficiently handles 1000+ stores
-- **Filter Combinations**: Supports complex multi-criteria filtering
-- **Memory Management**: Optimized with React hooks and useMemo
-- **Export Speed**: Generates CSV files in seconds
-- **UI Responsiveness**: Maintains 60fps interactions
+### Market Penetration
+Maximizes market presence by selecting stores that provide optimal coverage across customer segments and geographic areas.
 
-## Browser Support
+### Stronghold Focus
+Builds on existing high-performers while strategically expanding into adjacent high-potential markets.
+
+## 🌍 Regional Distribution
+
+### National Coverage
+Even distribution across all available regions based on store density and market size.
+
+### Over-indexing
+Focus strategy allowing:
+- **Region Selection**: Choose specific regions for emphasis
+- **Focus Percentage**: Set how much selection should concentrate on chosen regions
+- **Real-time Preview**: See immediate impact on distribution
+- **Remainder Distribution**: Proportional allocation of remaining stores
+
+## 📊 Sample Data
+
+Includes 30 Dutch retail stores across:
+- **Albert Heijn**: 10 locations across major cities
+- **Jumbo**: 10 stores in diverse regions
+- **Lidl**: 10 outlets representing discount retail segment
+
+Complete with realistic data across all required fields for immediate testing.
+
+## 🔧 Performance & Scalability
+
+- **Dataset Size**: Efficiently handles 1,000+ stores with responsive UI
+- **Real-time Updates**: Instant feedback on filter and configuration changes
+- **Memory Optimization**: React hooks and useMemo for efficient rendering
+- **Export Speed**: Generates CSV files in seconds regardless of dataset size
+- **Error Handling**: Graceful degradation with partial data support
+
+## 🌐 Browser Support
 
 - Chrome 90+
 - Firefox 88+
 - Safari 14+
 - Edge 90+
 
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
+## 📞 Support
 
-For questions or support, please open an issue in the repository.
+For questions, issues, or feature requests, please open an issue in the repository.
 
 ---
 
-**Store List Builder** - Sophisticated retail analytics for strategic store selection at scale. 
+**Store List Builder** - Professional retail analytics for strategic store selection at enterprise scale. 
